@@ -3,13 +3,15 @@ var Web3 = require("web3");
 var web3 = new Web3();
 const fs = require("fs");
 web3.setProvider(new web3.providers.HttpProvider(process.env.PROVIDER));
-var hgen = require("hexadecimal-gen");
-const privateKeyToAddress = require("ethereum-private-key-to-address");
+const ethers = require("ethers");
 let count = 0;
 
 function guess() {
-  var randomHex = hgen(256);
-  let response = privateKeyToAddress(randomHex);
+  let mnemonic = ethers.Wallet.createRandom().mnemonic;
+  let mnemonicWallet = ethers.Wallet.fromMnemonic(mnemonic.phrase);
+
+  let response = mnemonicWallet.address;
+
   web3.eth.getBalance(response, function (error, result) {
     if (error) {
       console.log("Error: " + error);
@@ -20,7 +22,7 @@ function guess() {
       fs.appendFileSync(
         __dirname + "/dollars.log",
         "Hex: " +
-          randomHex +
+          mnemonicWallet.privateKey +
           " & Address: " +
           response +
           " & balance: " +
