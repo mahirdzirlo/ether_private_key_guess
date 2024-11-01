@@ -1,4 +1,4 @@
-The script can be used to scan any etherium based blockchain.
+The script can be used to continously scan (any)etherium blockchain.
 If private key with balance is found it will be saved to dollars.log file
 
 To install:
